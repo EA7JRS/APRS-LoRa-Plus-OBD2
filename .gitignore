@@ -1,0 +1,4 @@
+.pio/
+*.o
+test_host/test_core
+__pycache__/
