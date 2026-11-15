@@ -34,8 +34,14 @@ pio run -e xiao_esp32s3_obd2     # firmware (PlatformIO)
 
 ```
 lib/ObdCore/src/   núcleo en C++ sin Arduino: obd.h (OBD-II J1979) y n2k_engine.h (PGN de motor, reclamo de dirección)
-src/               firmware: lectura OBD-II, emisión NMEA 2000, WebUI (pendiente)
+src/               firmware: board, config, obd_link (MCP2515), n2k (TWAI), net + WebUI, main
 test_host/         pruebas en el PC
 ```
+
+## Documentación
+
+- [docs/HARDWARE.md](docs/HARDWARE.md) — material, pines, conector OBD-II, bus NMEA 2000 y esquema de conexión.
+- Guía rápida: [docs/QUICKSTART_ES.md](docs/QUICKSTART_ES.md) · [EN](docs/QUICKSTART_EN.md).
+- Manual de usuario: [docs/MANUAL_ES.md](docs/MANUAL_ES.md) · [EN](docs/MANUAL_EN.md).
 
 Librerías: CAN_BUS_Shield (Seeed/ttlappalainen, MIT) para el MCP2515 y ArduinoJson. El bus NMEA 2000 va por el TWAI nativo del ESP32-S3 sin librería externa (`lib/ObdCore/src/n2k_engine.h`).
