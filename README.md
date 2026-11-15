@@ -1,6 +1,8 @@
 # APRS LoRa+ OBD-II
 
-Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · parte del ecosistema **APRS LoRa+**.
+Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · versión **5.4.6** (la misma que el resto del ecosistema) · parte del ecosistema **APRS LoRa+**.
+
+Instalación sin compilar: [instalador web de APRS LoRa+](https://ea7jrs.github.io/APRS-LoRa-Plus/install/#nautica), grupo **Náutica** (Chrome o Edge, cable USB).
 
 Pasarela **OBD-II → NMEA 2000**: lee el puerto OBD-II del coche y pone los datos de motor en el bus **NMEA 2000**, para que se vean como **indicadores de motor** tanto en el **plotter APRS LoRa+** como en un **plotter Garmin** (y cualquier equipo NMEA 2000). También puede mandar la telemetría por **APRS** al tracker y la app (pendiente).
 
@@ -29,7 +31,7 @@ Los formatos de los PGN (NMEA 2000 y J1939) son los de la base de datos de **[CA
 
 - Núcleo probado en el PC (`test_host`, 28 comprobaciones): decodificador OBD-II y codificadores de PGN de motor contrastados con canboat.
 - **Firmware (2026-11-15):** lectura OBD-II por el MCP2515 (`obd_link`, consulta de PID por turnos, caducidad por dato), emisión NMEA 2000 por el TWAI nativo con reclamo de dirección (`n2k`, 127488/127489/127505/127508), configuración en LittleFS (`config`) y WebUI con la cabecera del ecosistema y botón de donativo (`net`, `web_page.h`): estado del motor y del bus, ajustes y actualización por `/update`. Responde a `APRS-INFO?` por USB (`device=obd2`). **Compila en la CI. Sin probar con un coche, un transceptor NMEA 2000 ni un plotter.**
-- Falta: telemetría APRS opcional al tracker/app, release en el instalador web (grupo «kit CAN» / Náutica) y comprobar pines, cristal del MCP2515 y los PGN con un vehículo y un plotter reales.
+- Falta: telemetría APRS opcional al tracker/app, comprobar pines, cristal del MCP2515 y los PGN con un vehículo y un plotter reales.
 
 ## Compilar
 

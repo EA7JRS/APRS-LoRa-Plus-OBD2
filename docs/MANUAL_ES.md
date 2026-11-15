@@ -1,6 +1,6 @@
 # APRS LoRa+ OBD-II — Manual de usuario
 
-Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · parte del ecosistema **APRS LoRa+**.
+Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · versión 5.4.6 · parte del ecosistema **APRS LoRa+**.
 
 ## 1. Qué es
 
@@ -94,7 +94,7 @@ defecto; es el PIN del ecosistema APRS LoRa+, se cambia o se deja vacío en *Con
 
 ## 8. Actualizar el firmware
 
-Por la WebUI, en *Actualizar el firmware* (`/update`) con la clave; o por USB con `pio run -e xiao_esp32s3_obd2 -t upload`.
+Por la WebUI, en *Actualizar el firmware* (`/update`) con la clave; por USB con el [instalador web](https://ea7jrs.github.io/APRS-LoRa-Plus/install/#nautica) (grupo **Náutica**, placa `xiao_esp32s3_obd2`; conserva los ajustes), o compilando con `pio run -e xiao_esp32s3_obd2 -t upload`.
 Por USB, la placa contesta a `APRS-INFO?` con `device=obd2`.
 
 ## 9. Motor de barco (J1939)

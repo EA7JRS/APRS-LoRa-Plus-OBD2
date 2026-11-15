@@ -2,7 +2,7 @@
 
 1. **Assemble**: XIAO ESP32-S3 on the CAN kit (that is the **car** bus) and an **external CAN transceiver** on the native
    TWAI (TX D2, RX D3) for the **NMEA 2000** bus. Details and diagram in [HARDWARE.md](HARDWARE.md).
-2. **Flash** the firmware: `pio run -e xiao_esp32s3_obd2 -t upload`, or `firmware.bin` from the web installer.
+2. **Flash** the firmware: `pio run -e xiao_esp32s3_obd2 -t upload`, or with the [web installer](https://ea7jrs.github.io/APRS-LoRa-Plus/install/#nautica) (**Nautical** group, board `xiao_esp32s3_obd2`).
 3. **Car (OBD-II)**: CAN-H to OBD-II pin 6, CAN-L to pin 14, GND to pin 5. Power the XIAO through a 12 → 5 V converter from
    pin 16 (or the cigarette socket). **Do not** close the kit's 120 Ω jumper.
 4. **NMEA 2000 bus**: CAN-H to white (pin 4), CAN-L to blue (pin 5), GND to black (pin 3). The bus needs its **two

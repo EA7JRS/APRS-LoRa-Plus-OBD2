@@ -1,6 +1,6 @@
 # APRS LoRa+ OBD-II — User manual
 
-Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · part of the **APRS LoRa+** ecosystem.
+Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · version 5.4.6 · part of the **APRS LoRa+** ecosystem.
 
 ## 1. What it is
 
@@ -94,7 +94,7 @@ the APRS LoRa+ ecosystem PIN, changed or left empty in *Configuration*).
 
 ## 8. Updating the firmware
 
-Through the WebUI, in *Update firmware* (`/update`) with the key; or over USB with `pio run -e xiao_esp32s3_obd2 -t upload`.
+Through the WebUI, in *Update firmware* (`/update`) with the key; over USB with the [web installer](https://ea7jrs.github.io/APRS-LoRa-Plus/install/#nautica) (**Nautical** group, board `xiao_esp32s3_obd2`; settings are kept), or building it with `pio run -e xiao_esp32s3_obd2 -t upload`.
 Over USB the board answers `APRS-INFO?` with `device=obd2`.
 
 ## 9. Boat engine (J1939)
