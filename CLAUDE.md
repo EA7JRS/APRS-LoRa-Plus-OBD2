@@ -2,7 +2,7 @@
 
 Propietario: Manuel (EA7JRS). Idioma de trabajo: español, respuestas breves y directas.
 Archivos nuevos con la cabecera `Copyright (C) 2026 Manuel - EA7JRS` y licencia GPL-3.0-or-later.
-Repositorio: `EA7JRS/APRS-LoRa-Plus-OBD2` (por crear). Parte del ecosistema APRS LoRa+ (tracker, rotor, app, display, plotter, pasarela NMEA2000, sat-aprs).
+Repositorio: `EA7JRS/APRS-LoRa-Plus-OBD2` (público, creado por Manuel). Parte del ecosistema APRS LoRa+ (tracker, rotor, app, display, plotter, pasarela NMEA2000, sat-aprs).
 
 ## Qué es
 Uso del «kit CAN» de Manuel (XIAO ESP32-S3 + XIAO CAN Bus Expansion Board): pasarela **OBD-II → NMEA 2000**. Lee el OBD-II del coche y emite los datos de motor al bus NMEA 2000 para que se vean como indicadores de motor en el **plotter APRS LoRa+** y en un **plotter Garmin**. Opcional: telemetría APRS al tracker/app.
