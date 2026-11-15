@@ -1,26 +1,51 @@
 /* Copyright (C) 2026 Manuel - EA7JRS
  *
- * This file is part of APRS LoRa+ OBD-II. GPL-3.0-or-later (ver LICENSE).
+ * APRS LoRa+ OBD-II: pasarela OBD-II → NMEA 2000. Lee el puerto OBD-II del coche por el MCP2515 (CAN a 500 kbit/s, solo
+ * consultas) y pone los datos de motor en el bus NMEA 2000 por el TWAI nativo del ESP32-S3 (250 kbit/s, transceptor
+ * externo), para que se vean como indicadores de motor en el plotter APRS LoRa+ y en un plotter Garmin.
+ * Placa: Seeed XIAO ESP32-S3 + XIAO CAN Bus Expansion Board (MCP2515).
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+ * version. See LICENSE.
  */
-// Firmware (esqueleto): por hacer la lectura OBD-II por el MCP2515 y la emisión NMEA 2000 por el TWAI. De momento solo
-// responde a "APRS-INFO?" por el puerto serie, como el resto de equipos del ecosistema.
+
 #include <Arduino.h>
-#include "obd.h"
-#include "n2k_engine.h"
+#include "board.h"
+#include "config.h"
+#include "obd_link.h"
+#include "n2k.h"
+#include "net.h"
+
+static String usbLine;
+
+// Instalador web: la placa contesta a "APRS-INFO?" por el USB, como el resto del ecosistema APRS LoRa+
+static void usbLoop() {
+    while (Serial.available()) {
+        const char c = (char)Serial.read();
+        if (c == '\n' || c == '\r') {
+            if (usbLine == "APRS-INFO?")
+                Serial.printf("APRS-LoRa-Plus: device=obd2 board=%s version=%s chip=esp32s3 ota=1\n", OBD2_BOARD, OBD2_VERSION);
+            usbLine = "";
+        } else if (usbLine.length() < 32) usbLine += c;
+    }
+}
 
 void setup() {
     Serial.begin(115200);
-    delay(200);
-    Serial.println("APRS LoRa+ OBD-II (esqueleto)");
+    delay(300);
+    Serial.printf("\nAPRS LoRa+ OBD-II %s\n", OBD2_VERSION);
+    Serial.println("[INFO][Main] APRS LoRa+ (c) 2026 Manuel - EA7JRS");      // la misma línea en todos los equipos APRS LoRa+
+    Config::begin();
+    ObdLink::begin();
+    N2k::begin();
+    Net::begin();
 }
 
 void loop() {
-    if (Serial.available()) {
-        String s = Serial.readStringUntil('\n');
-        s.trim();
-        if (s == "APRS-INFO?") {
-            Serial.printf("APRS-LoRa-Plus: device=obd2 board=xiao_esp32s3 version=0.1.0 chip=%s\n", ESP.getChipModel());
-        }
-    }
-    delay(10);
+    ObdLink::loop();
+    N2k::loop(ObdLink::snapshot());
+    Net::loop();
+    usbLoop();
+    delay(1);
 }

@@ -19,7 +19,9 @@ Pasarela **OBD-II → NMEA 2000**: lee el puerto OBD-II del coche y pone los dat
 
 ## Estado
 
-- Núcleo probado en el PC (`test_host`, 20 comprobaciones): decodificador OBD-II y codificadores de PGN de motor contrastados con canboat. **Firmware (board, WebUI, release): en preparación. Sin probar con un coche ni con un bus.**
+- Núcleo probado en el PC (`test_host`, 20 comprobaciones): decodificador OBD-II y codificadores de PGN de motor contrastados con canboat.
+- **Firmware (2026-11-15):** lectura OBD-II por el MCP2515 (`obd_link`, consulta de PID por turnos, caducidad por dato), emisión NMEA 2000 por el TWAI nativo con reclamo de dirección (`n2k`, 127488/127489/127505/127508), configuración en LittleFS (`config`) y WebUI con la cabecera del ecosistema y botón de donativo (`net`, `web_page.h`): estado del motor y del bus, ajustes y actualización por `/update`. Responde a `APRS-INFO?` por USB (`device=obd2`). **Compila en la CI. Sin probar con un coche, un transceptor NMEA 2000 ni un plotter.**
+- Falta: telemetría APRS opcional al tracker/app, release en el instalador web (grupo «kit CAN» / Náutica) y comprobar pines, cristal del MCP2515 y los PGN con un vehículo y un plotter reales.
 
 ## Compilar
 
@@ -36,4 +38,4 @@ src/               firmware: lectura OBD-II, emisión NMEA 2000, WebUI (pendient
 test_host/         pruebas en el PC
 ```
 
-Librerías: CAN_BUS_Shield (Seeed/ttlappalainen, MIT), NimBLE-Arduino, ArduinoJson.
+Librerías: CAN_BUS_Shield (Seeed/ttlappalainen, MIT) para el MCP2515 y ArduinoJson. El bus NMEA 2000 va por el TWAI nativo del ESP32-S3 sin librería externa (`lib/ObdCore/src/n2k_engine.h`).
