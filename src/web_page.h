@@ -32,8 +32,8 @@ a{color:var(--acc)}#msg{font-size:13px;margin-left:8px}
 </style></head><body>
 <header><img class="logo" src="data:image/png;base64,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" alt="APRS LoRa+" width="40" height="40"><span class="brand"><span class="brand-name">APRS LoRa+</span><small class="brand-sub">OBD-II &#8594; NMEA 2000 <span id="ver"></span></small></span><span class="right" id="hdr"></span></header>
 <main>
-<div class="c"><h3>Motor (OBD-II)</h3><table class="kv" id="eng"></table></div>
-<div class="c"><h3>Bus OBD-II</h3><table class="kv" id="obd"></table></div>
+<div class="c"><h3>Motor <span class="mut" id="pr"></span></h3><table class="kv" id="eng"></table></div>
+<div class="c"><h3>Bus del motor</h3><table class="kv" id="obd"></table></div>
 <div class="c"><h3>NMEA 2000</h3><table class="kv" id="nk"></table></div>
 <div class="c w"><h3>Configuración</h3>
 <div class="grid">
@@ -43,6 +43,8 @@ a{color:var(--acc)}#msg{font-size:13px;margin-left:8px}
 <label>Red (SSID)<input id="f_ssid"></label>
 <label>Clave de la red<input id="f_wpass" placeholder="(sin cambiar)"></label>
 <label>Clave del punto de acceso<input id="f_appass" placeholder="(sin cambiar)"></label>
+<label>Motor<select id="f_proto"><option value="obd2">Coche: OBD-II (500 kbit/s)</option><option value="j1939">Barco: J1939 (solo escucha)</option></select></label>
+<label>Velocidad J1939<select id="f_jk"><option value="250">250 kbit/s</option><option value="500">500 kbit/s</option></select></label>
 <label>MCP2515 CS (GPIO)<input id="f_cs" type="number"></label>
 <label>Cristal MCP2515<select id="f_mhz"><option value="16">16 MHz</option><option value="8">8 MHz</option></select></label>
 <label>Consulta OBD-II (ms)<input id="f_poll" type="number"></label>
@@ -82,12 +84,18 @@ async function tick(){
   '<tr><td>Consumo</td><td>'+n(b.fuelRate,' L/h',1)+'</td></tr>'+
   '<tr><td>Tensión módulo</td><td>'+n(b.volt,' V',1)+'</td></tr>'+
   '<tr><td>Presión colector</td><td>'+n(b.map,' kPa',0)+'</td></tr>'+
-  '<tr><td>Marcha</td><td>'+n(b.runtime,' s',0)+'</td></tr>';
+  '<tr><td>Marcha</td><td>'+n(b.runtime,' s',0)+'</td></tr>'+
+  (b.proto==='j1939'?'<tr><td>Presión de aceite</td><td>'+n(b.oilP,' kPa',0)+'</td></tr>'+
+  '<tr><td>Presión refrigerante</td><td>'+n(b.coolP,' kPa',0)+'</td></tr>'+
+  '<tr><td>Presión combustible</td><td>'+n(b.fuelP,' kPa',0)+'</td></tr>'+
+  '<tr><td>Sobrealimentación</td><td>'+n(b.boost,' kPa',0)+'</td></tr>'+
+  '<tr><td>Horas de motor</td><td>'+n(b.hours,' h',1)+'</td></tr>':'');
+ $('pr').textContent=b.proto==='j1939'?'(J1939)':'(OBD-II)';
  $('obd').innerHTML=
   '<tr><td>MCP2515</td><td>'+row(b.bus)+'</td></tr>'+
-  '<tr><td>ECU responde</td><td>'+row(b.ecu)+'</td></tr>'+
+  '<tr><td>'+(b.proto==='j1939'?'Motor emite':'ECU responde')+'</td><td>'+row(b.ecu)+'</td></tr>'+
   '<tr><td>Consultas</td><td>'+b.requests+'</td></tr>'+
-  '<tr><td>Respuestas</td><td>'+b.responses+'</td></tr>'+
+  '<tr><td>'+(b.proto==='j1939'?'Tramas de motor':'Respuestas')+'</td><td>'+b.responses+'</td></tr>'+
   '<tr><td>Errores</td><td>'+b.errors+'</td></tr>';
  const k=s.n2k;
  $('nk').innerHTML=
@@ -101,7 +109,7 @@ async function tick(){
 async function load(){
  const c=await(await fetch('/api/config')).json();
  $('f_name').value=c.name;$('f_wmode').value=c.wifi.mode;$('f_ssid').value=c.wifi.ssid;
- $('f_cs').value=c.obd.cs;$('f_mhz').value=c.obd.mhz;$('f_poll').value=c.obd.pollMs;$('f_to').value=c.obd.timeoutMs;
+ $('f_proto').value=c.obd.proto;$('f_jk').value=c.obd.j1939Kbps;$('f_cs').value=c.obd.cs;$('f_mhz').value=c.obd.mhz;$('f_poll').value=c.obd.pollMs;$('f_to').value=c.obd.timeoutMs;
  $('f_tx').value=c.n2k.tx;$('f_rx').value=c.n2k.rx;$('f_addr').value=c.n2k.addr;$('f_inst').value=c.n2k.instance;
  $('f_boost').value=c.n2k.mapAsBoost?'1':'0';$('f_fuel').value=c.n2k.fuelCapacityL;
 }
@@ -109,7 +117,7 @@ function num(id){return parseInt($(id).value,10);}
 async function save(){
  const o={name:$('f_name').value,
   wifi:{mode:num('f_wmode'),ssid:$('f_ssid').value},
-  obd:{cs:num('f_cs'),mhz:num('f_mhz'),pollMs:num('f_poll'),timeoutMs:num('f_to')},
+  obd:{proto:$('f_proto').value,j1939Kbps:num('f_jk'),cs:num('f_cs'),mhz:num('f_mhz'),pollMs:num('f_poll'),timeoutMs:num('f_to')},
   n2k:{tx:num('f_tx'),rx:num('f_rx'),addr:num('f_addr'),instance:num('f_inst'),mapAsBoost:$('f_boost').value==='1',fuelCapacityL:parseFloat($('f_fuel').value)}};
  if($('f_pin').value)o.pin=$('f_pin').value;
  if($('f_wpass').value)o.wifi.pass=$('f_wpass').value;

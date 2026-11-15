@@ -97,6 +97,28 @@ the APRS LoRa+ ecosystem PIN, changed or left empty in *Configuration*).
 Through the WebUI, in *Update firmware* (`/update`) with the key; or over USB with `pio run -e xiao_esp32s3_obd2 -t upload`.
 Over USB the board answers `APRS-INFO?` with `device=obd2`.
 
-## 9. APRS telemetry (pending)
+## 9. Boat engine (J1939)
+
+In *Configuration > Motor* choose **Barco: J1939** for a marine or industrial diesel with SAE J1939 (29-bit CAN, 250 kbit/s; some at 500). In that mode the gateway **only listens**: it sends no requests. Wire CAN-H / CAN-L / GND of the kit terminal to the engine's J1939 bus (9-pin Deutsch diagnostic connector: C = CAN-H, D = CAN-L, A = ground; or as the maker states). Do not close the 120 Ω jumper if the bus already has its terminators.
+
+| Value | J1939 PGN | Goes out in |
+|---|---|---|
+| Engine speed | 61444 (EEC1) | 127488 |
+| Boost, intake temperature | 65270 | 127488 |
+| Load | 61443 (EEC2) | 127489 |
+| Coolant, oil (temperature) | 65262 | 127489 |
+| Oil, coolant, fuel (pressure) | 65263 | 127489 |
+| Fuel rate | 65266 | 127489 |
+| Total hours | 65253 | 127489 |
+| Battery voltage | 65271 | 127489 and 127508 |
+| Fuel level | 65276 | 127505 |
+
+Many engines give total hours only on request; as the gateway requests nothing, they appear only if the engine broadcasts them. Not tested with a real engine.
+
+## 10. APRS telemetry (pending)
 
 Sending engine telemetry over APRS to the tracker and the app is planned; for now only the preference is stored.
+
+## 11. Formats
+
+PGN formats (NMEA 2000 and J1939) follow the [CANboat](https://canboat.github.io/canboat/) database v9.2.0 (Apache-2.0); `tools/canboat_run.sh` checks them.

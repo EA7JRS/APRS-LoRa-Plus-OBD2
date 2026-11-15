@@ -70,6 +70,10 @@ Conector OBD-II (J1962, 16 pines) del coche. Solo hacen falta tres señales para
 - ⚠️ El pin 16 da **12 V aunque el coche esté apagado**: si dejas la pasarela enchufada, consume batería. Usa un cable con
   interruptor o desenchúfala, o aliméntala del encendedor (12 V con la llave).
 
+## Motor de barco (J1939), en lugar del coche
+
+Con *Motor = Barco: J1939* la borna del kit CAN va al bus J1939 del motor (250 kbit/s; conector Deutsch de 9 pines: **C** = CAN-H, **D** = CAN-L, **A** = masa, **B** = +batería). La pasarela solo escucha. El esquema es el mismo cambiando «COCHE» por el motor.
+
 ## Bus del barco / plotter (NMEA 2000)
 
 Transceptor externo (SN65HVD230 o equivalente de 3,3 V) entre el TWAI del XIAO y el conector Micro-C:

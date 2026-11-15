@@ -25,7 +25,7 @@ namespace Config {
         JsonObject w = o["wifi"].to<JsonObject>();
         w["mode"] = c.wifiMode; w["ssid"] = c.ssid; w["pass"] = secrets ? c.pass : MASK; w["apPass"] = secrets ? c.apPass : MASK;
         JsonObject b = o["obd"].to<JsonObject>();
-        b["cs"] = c.mcpCs; b["int"] = c.mcpInt; b["mhz"] = c.mcpMHz; b["pollMs"] = c.pollMs; b["timeoutMs"] = c.timeoutMs;
+        b["proto"] = c.proto; b["j1939Kbps"] = c.j1939Kbps; b["cs"] = c.mcpCs; b["int"] = c.mcpInt; b["mhz"] = c.mcpMHz; b["pollMs"] = c.pollMs; b["timeoutMs"] = c.timeoutMs;
         JsonObject n = o["n2k"].to<JsonObject>();
         n["tx"] = c.canTx; n["rx"] = c.canRx; n["addr"] = c.n2kAddr; n["instance"] = c.engineInstance;
         n["mapAsBoost"] = c.mapAsBoost; n["fuelCapacityL"] = c.fuelCapacityL;
@@ -38,7 +38,7 @@ namespace Config {
         JsonObjectConst w = in["wifi"];
         get(w, "mode", n.wifiMode); getS(w, "ssid", n.ssid); getSecret(w, "pass", n.pass); getSecret(w, "apPass", n.apPass);
         JsonObjectConst b = in["obd"];
-        get(b, "cs", n.mcpCs); get(b, "int", n.mcpInt); get(b, "mhz", n.mcpMHz); get(b, "pollMs", n.pollMs); get(b, "timeoutMs", n.timeoutMs);
+        getS(b, "proto", n.proto); get(b, "j1939Kbps", n.j1939Kbps); get(b, "cs", n.mcpCs); get(b, "int", n.mcpInt); get(b, "mhz", n.mcpMHz); get(b, "pollMs", n.pollMs); get(b, "timeoutMs", n.timeoutMs);
         JsonObjectConst k = in["n2k"];
         get(k, "tx", n.canTx); get(k, "rx", n.canRx); get(k, "addr", n.n2kAddr); get(k, "instance", n.engineInstance);
         get(k, "mapAsBoost", n.mapAsBoost);
@@ -49,6 +49,8 @@ namespace Config {
         if (n.name.empty() || n.name.size() > 24) return "name 1-24";
         if (n.wifiMode < 0 || n.wifiMode > 2) return "wifi.mode 0-2";
         if (n.apPass.size() < 8) return "wifi.apPass >= 8";
+        if (n.proto != "obd2" && n.proto != "j1939") return "obd.proto obd2 | j1939";
+        if (n.j1939Kbps != 250 && n.j1939Kbps != 500) return "obd.j1939Kbps 250 | 500";
         if (n.mcpMHz != 8 && n.mcpMHz != 16) return "obd.mhz 8 | 16";
         if (n.mcpCs < 0 || n.mcpCs > 48) return "obd.cs";
         if (n.pollMs < 20 || n.pollMs > 2000) return "obd.pollMs 20-2000";

@@ -18,7 +18,10 @@ struct ObdGwConfig {
     std::string ssid, pass;
     std::string apPass = "aprsobd2";             // mínimo 8 caracteres
 
-    // OBD-II (MCP2515)
+    // Bus del motor (MCP2515): "obd2" = coche (OBD-II, 500 kbit/s, consultas del modo 01);
+    // "j1939" = motor de barco o industrial (SAE J1939, 250 kbit/s, solo escucha)
+    std::string proto = "obd2";
+    int         j1939Kbps = 250;                  // 250 (lo habitual) o 500
     int         mcpCs = OBD2_MCP_CS;
     int         mcpInt = OBD2_MCP_INT;
     int         mcpMHz = 16;                      // cristal del MCP2515 del kit: 16 u 8 (comprobar en la placa)

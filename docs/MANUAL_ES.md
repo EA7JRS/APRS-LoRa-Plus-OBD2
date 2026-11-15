@@ -97,6 +97,28 @@ defecto; es el PIN del ecosistema APRS LoRa+, se cambia o se deja vacío en *Con
 Por la WebUI, en *Actualizar el firmware* (`/update`) con la clave; o por USB con `pio run -e xiao_esp32s3_obd2 -t upload`.
 Por USB, la placa contesta a `APRS-INFO?` con `device=obd2`.
 
-## 9. Telemetría APRS (pendiente)
+## 9. Motor de barco (J1939)
+
+En *Configuración > Motor* elige **Barco: J1939** para un motor diésel marino o industrial con SAE J1939 (CAN de 29 bits, 250 kbit/s; algunos a 500). En ese modo la pasarela **solo escucha**: no envía consultas. Conecta CAN-H / CAN-L / GND de la borna del kit al bus J1939 del motor (conector de diagnóstico Deutsch de 9 pines: C = CAN-H, D = CAN-L, A = masa; o el que indique el fabricante). No cierres el puente de 120 Ω si el bus ya tiene sus terminadores.
+
+| Dato | PGN J1939 | Sale en |
+|---|---|---|
+| Régimen | 61444 (EEC1) | 127488 |
+| Sobrealimentación, temperatura de admisión | 65270 | 127488 |
+| Carga | 61443 (EEC2) | 127489 |
+| Refrigerante, aceite (temperatura) | 65262 | 127489 |
+| Aceite, refrigerante, combustible (presión) | 65263 | 127489 |
+| Consumo | 65266 | 127489 |
+| Horas totales | 65253 | 127489 |
+| Tensión de batería | 65271 | 127489 y 127508 |
+| Nivel de combustible | 65276 | 127505 |
+
+Las horas totales muchos motores solo las dan bajo petición; como la pasarela no pide nada, saldrán solo si el motor las difunde. Sin probar con un motor real.
+
+## 10. Telemetría APRS (pendiente)
 
 Está previsto poder mandar la telemetría del motor por APRS al tracker y a la app; de momento solo se guarda la preferencia.
+
+## 11. Formatos
+
+Los formatos de los PGN (NMEA 2000 y J1939) son los de la base de datos de [CANboat](https://canboat.github.io/canboat/) v9.2.0 (Apache-2.0); `tools/canboat_run.sh` los comprueba.

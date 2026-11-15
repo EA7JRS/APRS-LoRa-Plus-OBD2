@@ -5,7 +5,7 @@ CXXFLAGS ?= -std=gnu++17 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefin
 run: test_core
 	./test_core
 
-test_core: test_core.cpp ../lib/ObdCore/src/obd.h ../lib/ObdCore/src/n2k_engine.h
+test_core: test_core.cpp ../lib/ObdCore/src/obd.h ../lib/ObdCore/src/n2k_engine.h ../lib/ObdCore/src/j1939.h
 	$(CXX) $(CXXFLAGS) -o test_core test_core.cpp
 
 clean:

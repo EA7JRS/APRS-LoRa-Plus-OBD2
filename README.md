@@ -12,6 +12,14 @@ Pasarela **OBD-II → NMEA 2000**: lee el puerto OBD-II del coche y pone los dat
 - **Emite** al bus NMEA 2000 los **PGN de motor estándar**: **127488** (rápido: RPM, turbo), **127489** (dinámico: temperaturas, consumo, tensión, horas, carga), **127505** (nivel de combustible) y **127508** (batería). Al ser estándar, los dos plotters los pintan sin código específico.
 - Reclama una dirección en el bus NMEA 2000 (ISO 11783-5). No es un nodo certificado.
 
+## Motor de barco (J1939)
+
+Además del OBD-II del coche, la pasarela puede escuchar un **motor diésel marino o industrial con SAE J1939** (*Configuración > Motor > Barco: J1939*): el MCP2515 pasa a 250 kbit/s (o 500) y **solo escucha** lo que el motor difunde (régimen, carga, temperaturas, presiones de aceite / refrigerante / combustible, consumo, sobrealimentación, tensión, nivel de combustible y horas totales), y lo emite con los mismos PGN NMEA 2000. No pide ni escribe nada en el bus del motor.
+
+## Referencia de formatos: CANboat
+
+Los formatos de los PGN (NMEA 2000 y J1939) son los de la base de datos de **[CANboat](https://canboat.github.io/canboat/)** (Apache-2.0), release fijada **v9.2.0**. `tools/canboat_run.sh` baja `canboat.json` y `canboat-j1939.json` de esa release y comprueba con ellos nuestros codificadores y el decodificador J1939 (59 comprobaciones); la CI lo ejecuta en cada subida.
+
 ## Hardware
 
 - **XIAO ESP32-S3** + **XIAO CAN Bus Expansion Board** (MCP2515 + transceptor): el MCP2515 se conecta al **OBD-II del coche** (500 kbit/s) con un cable OBD-II a DB9/CAN-H/CAN-L.
@@ -19,7 +27,7 @@ Pasarela **OBD-II → NMEA 2000**: lee el puerto OBD-II del coche y pone los dat
 
 ## Estado
 
-- Núcleo probado en el PC (`test_host`, 20 comprobaciones): decodificador OBD-II y codificadores de PGN de motor contrastados con canboat.
+- Núcleo probado en el PC (`test_host`, 28 comprobaciones): decodificador OBD-II y codificadores de PGN de motor contrastados con canboat.
 - **Firmware (2026-11-15):** lectura OBD-II por el MCP2515 (`obd_link`, consulta de PID por turnos, caducidad por dato), emisión NMEA 2000 por el TWAI nativo con reclamo de dirección (`n2k`, 127488/127489/127505/127508), configuración en LittleFS (`config`) y WebUI con la cabecera del ecosistema y botón de donativo (`net`, `web_page.h`): estado del motor y del bus, ajustes y actualización por `/update`. Responde a `APRS-INFO?` por USB (`device=obd2`). **Compila en la CI. Sin probar con un coche, un transceptor NMEA 2000 ni un plotter.**
 - Falta: telemetría APRS opcional al tracker/app, release en el instalador web (grupo «kit CAN» / Náutica) y comprobar pines, cristal del MCP2515 y los PGN con un vehículo y un plotter reales.
 
@@ -27,6 +35,7 @@ Pasarela **OBD-II → NMEA 2000**: lee el puerto OBD-II del coche y pone los dat
 
 ```
 make -C test_host run            # pruebas del núcleo en el PC
+tools/canboat_run.sh             # formatos contra CANboat v9.2.0
 pio run -e xiao_esp32s3_obd2     # firmware (PlatformIO)
 ```
 

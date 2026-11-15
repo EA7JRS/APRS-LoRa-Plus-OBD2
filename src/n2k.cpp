@@ -95,10 +95,11 @@ namespace N2k {
         }
 
         // 127488 motor rápido (rpm, sobrealimentación): 10 veces por segundo
-        if (now - last88 >= 100 && (!std::isnan(d.rpm) || !std::isnan(d.mapKpa))) {
+        if (now - last88 >= 100 && (!std::isnan(d.rpm) || !std::isnan(d.mapKpa) || !std::isnan(d.boostKpa))) {
             last88 = now;
             float boostPa = NAN;
-            if (Cfg.mapAsBoost && !std::isnan(d.mapKpa)) { float g = d.mapKpa - 101.325f; boostPa = (g > 0 ? g : 0) * 1000.0f; }
+            if (!std::isnan(d.boostKpa)) boostPa = d.boostKpa * 1000.0f;          // J1939: ya es manométrica
+            else if (Cfg.mapAsBoost && !std::isnan(d.mapKpa)) { float g = d.mapKpa - 101.325f; boostPa = (g > 0 ? g : 0) * 1000.0f; }
             uint8_t p[8];
             N2kEng::engine127488(inst, d.rpm, boostPa, p);
             tx(N2kEng::makeId(2, PGN_88, src), p, 8);
@@ -106,7 +107,9 @@ namespace N2k {
 
         // 127489 motor dinámico (temperaturas, consumo, tensión, horas, carga): 2 veces por segundo, fast packet
         const bool has89 = !std::isnan(d.coolantC) || !std::isnan(d.oilTempC) || !std::isnan(d.moduleV) ||
-                           !std::isnan(d.fuelRateLh) || !std::isnan(d.loadPct) || d.runtimeS != 0xFFFFFFFF;
+                           !std::isnan(d.fuelRateLh) || !std::isnan(d.loadPct) || d.runtimeS != 0xFFFFFFFF ||
+                           !std::isnan(d.oilPressKpa) || !std::isnan(d.coolantPressKpa) || !std::isnan(d.fuelPressKpa) ||
+                           d.engineHoursS != 0xFFFFFFFF;
         if (now - last89 >= 500 && has89) {
             last89 = now;
             N2kEng::Dinamico dy;
@@ -114,7 +117,10 @@ namespace N2k {
             dy.oilTempK = toK(d.oilTempC);
             dy.altVoltageV = d.moduleV;
             dy.fuelRateLh = d.fuelRateLh;
-            dy.horasS = d.runtimeS;
+            dy.horasS = d.engineHoursS != 0xFFFFFFFF ? d.engineHoursS : d.runtimeS;   // horas totales (J1939) o tiempo de marcha (OBD-II)
+            if (!std::isnan(d.oilPressKpa)) dy.oilPressPa = d.oilPressKpa * 1000.0f;
+            if (!std::isnan(d.coolantPressKpa)) dy.coolantPressPa = d.coolantPressKpa * 1000.0f;
+            if (!std::isnan(d.fuelPressKpa)) dy.fuelPressPa = d.fuelPressKpa * 1000.0f;
             dy.cargaPct = pct8(d.loadPct);
             uint8_t payload[26];
             N2kEng::engine127489(inst, dy, payload);

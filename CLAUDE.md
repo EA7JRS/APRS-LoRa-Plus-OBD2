@@ -31,6 +31,10 @@ Uso del «kit CAN» de Manuel (XIAO ESP32-S3 + XIAO CAN Bus Expansion Board): pa
 - MAP → 127488 como sobrealimentación manométrica (MAP − 101,325 kPa, mínimo 0) si `mapAsBoost`; refrigerante/aceite a kelvin; tensión del módulo a `AltVoltage` (127489) y 127508; nivel 0x2F → 127505 tipo 0.
 - Falta: telemetría APRS opcional al tracker/app; release en el instalador web (grupo «kit CAN» / Náutica); comprobar en la placa los pines, el cristal del MCP2515 y los PGN con un vehículo y un plotter reales.
 
+## J1939 y CANboat (2026-11-15; Manuel: «los 3 puntos»)
+- `lib/ObdCore/src/j1939.h`: decodificador J1939 (61444, 61443, 65262, 65263, 65266, 65270, 65271, 65276, 65253) a `Obd::Data` (campos nuevos `oilPressKpa`, `coolantPressKpa`, `fuelPressKpa`, `boostKpa`, `engineHoursS`). `obd.proto` `obd2` | `j1939`, `obd.j1939Kbps` 250 | 500; en J1939 `obd_link` solo escucha (tramas de 29 bits) y la caducidad es 4 × `timeoutMs`. Sin probar con un motor.
+- Referencia de formatos: CANboat **v9.2.0** fijada (`tools/canboat_run.sh`, `canboat_check.py`, `j1939_check.py`, `test_host/dump_frames.cpp`): 28 + 31 comprobaciones en la CI; `canboat_check.py` es el mismo en plotter y sat-aprs. 28 comprobaciones en `test_host`.
+
 ## Cómo trabajar
 - No publicar releases ni crear repositorios sin que lo pida Manuel.
 - Antes de subir: `make -C test_host run`; la CI compilará el firmware.

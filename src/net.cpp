@@ -51,6 +51,7 @@ namespace Net {
 
         const Obd::Data o = ObdLink::snapshot();
         JsonObject b = d["obd"].to<JsonObject>();
+        b["proto"] = Cfg.proto;
         b["bus"] = ObdLink::busOk();
         b["ecu"] = ObdLink::ecuAlive();
         b["requests"] = ObdLink::requests();
@@ -66,6 +67,11 @@ namespace Net {
         addNum(b, "volt", o.moduleV);
         addNum(b, "fuelRate", o.fuelRateLh);
         addNum(b, "map", o.mapKpa);
+        addNum(b, "oilP", o.oilPressKpa);
+        addNum(b, "coolP", o.coolantPressKpa);
+        addNum(b, "fuelP", o.fuelPressKpa);
+        addNum(b, "boost", o.boostKpa);
+        if (o.engineHoursS != 0xFFFFFFFF) b["hours"] = o.engineHoursS / 3600.0;
         if (o.runtimeS != 0xFFFFFFFF) b["runtime"] = o.runtimeS;
 
         const N2k::Status& n = N2k::status();
