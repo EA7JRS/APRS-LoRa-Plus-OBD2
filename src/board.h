@@ -9,7 +9,7 @@
 //                D6 = GPIO43 (TX), D7 = GPIO44 (RX), D8 = GPIO7 (SCK), D9 = GPIO8 (MISO), D10 = GPIO9 (MOSI)
 #pragma once
 
-#define OBD2_VERSION "5.4.6"
+#define OBD2_VERSION "5.4.7"
 
 #ifndef OBD2_BOARD
     #define OBD2_BOARD "xiao_esp32s3_obd2"

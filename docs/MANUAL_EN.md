@@ -1,6 +1,6 @@
 # APRS LoRa+ OBD-II — User manual
 
-Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · version 5.4.6 · part of the **APRS LoRa+** ecosystem.
+Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · version 5.4.7 · part of the **APRS LoRa+** ecosystem.
 
 ## 1. What it is
 

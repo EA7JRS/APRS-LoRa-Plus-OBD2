@@ -1,6 +1,6 @@
 # APRS LoRa+ OBD-II
 
-Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · versión **5.4.6** (la misma que el resto del ecosistema) · parte del ecosistema **APRS LoRa+**.
+Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · versión **5.4.7** (la misma que el resto del ecosistema) · parte del ecosistema **APRS LoRa+**.
 
 Instalación sin compilar: [instalador web de APRS LoRa+](https://ea7jrs.github.io/APRS-LoRa-Plus/install/#nautica), grupo **Náutica** (Chrome o Edge, cable USB).
 
