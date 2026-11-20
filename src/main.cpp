@@ -8,6 +8,10 @@
 #include "obd.h"
 #include "n2k_engine.h"
 
+#ifndef OBD2_VERSION
+#define OBD2_VERSION "5.4.7"   // platformio.ini lo define; el mismo numero que el resto del ecosistema APRS LoRa+
+#endif
+
 void setup() {
     Serial.begin(115200);
     delay(200);
@@ -19,7 +23,7 @@ void loop() {
         String s = Serial.readStringUntil('\n');
         s.trim();
         if (s == "APRS-INFO?") {
-            Serial.printf("APRS-LoRa-Plus: device=obd2 board=xiao_esp32s3 version=0.1.0 chip=%s\n", ESP.getChipModel());
+            Serial.printf("APRS-LoRa-Plus: device=obd2 board=xiao_esp32s3 version=%s chip=%s\n", OBD2_VERSION, ESP.getChipModel());
         }
     }
     delay(10);

@@ -29,6 +29,9 @@ Uso del «kit CAN» de Manuel (XIAO ESP32-S3 + XIAO CAN Bus Expansion Board): pa
 - Núcleo probado en el PC (20 comprobaciones). Firmware, WebUI y release: **en preparación**. Sin probar con un coche, un transceptor, ni un plotter.
 - Falta: drivers de las dos CAN (MCP2515 + TWAI), bucle de consulta OBD-II, emisión de los PGN, WebUI, config, CI, release en el instalador web (grupo propio o «kit CAN»), y la telemetría APRS opcional.
 
+## Versión
+- **5.4.7** (2026-11-20; Manuel: «subimos todo a la siguiente version»): `OBD2_VERSION` en `platformio.ini` (lo contesta `APRS-INFO?`), README. Mismo número que el resto del ecosistema.
+
 ## Cómo trabajar
 - No publicar releases ni crear repositorios sin que lo pida Manuel.
 - Antes de subir: `make -C test_host run`; la CI compilará el firmware.

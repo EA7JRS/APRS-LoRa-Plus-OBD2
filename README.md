@@ -1,6 +1,6 @@
 # APRS LoRa+ OBD-II
 
-Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · parte del ecosistema **APRS LoRa+**.
+Copyright (C) 2026 Manuel - EA7JRS · GPL-3.0-or-later · parte del ecosistema **APRS LoRa+** · versión **5.4.7** (la misma que el tracker, el rotor, la app, la Display, el plotter y la pasarela NMEA 2000).
 
 Pasarela **OBD-II → NMEA 2000**: lee el puerto OBD-II del coche y pone los datos de motor en el bus **NMEA 2000**, para que se vean como **indicadores de motor** tanto en el **plotter APRS LoRa+** como en un **plotter Garmin** (y cualquier equipo NMEA 2000). También puede mandar la telemetría por **APRS** al tracker y la app (pendiente).
 
