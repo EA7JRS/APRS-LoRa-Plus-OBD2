@@ -2,6 +2,7 @@
 // This file is part of APRS LoRa+ OBD-II. GPL-3.0-or-later.
 #include "obd.h"
 #include "n2k_engine.h"
+#include "j1939.h"
 #include <cstdio>
 #include <cmath>
 
@@ -66,8 +67,28 @@ static void testEngineN2k() {
     CHECK(ac.alRecibir(makeId(6, 60928, 50, 255), bajo, 8, 400, out) && ac.address() != 50 && ac.cambios() == 1);
 }
 
+static void testJ1939() {
+    Obd::Data d;
+    const uint32_t id = 0x0CF00400;                                   // EEC1 del motor (origen 0), prioridad 3
+    CHECK(J1939::pgnOf(id) == 61444 && J1939::sourceOf(id) == 0);
+    CHECK(J1939::pgnOf(0x18EAFF00) == 59904);                         // PDU1: el destino no entra en el PGN
+    uint8_t eec1[8] = {0xFF, 0xFF, 0xFF, 0x68, 0x13, 0xFF, 0xFF, 0xFF};   // 0x1368 = 4968 * 0,125 = 621 rpm
+    CHECK(J1939::decode(id, eec1, 8, d) == 61444 && near(d.rpm, 621.0));
+    uint8_t et1[8] = {0x7B, 0xFF, 0x40, 0x2E, 0xFF, 0xFF, 0xFF, 0xFF};    // 123 - 40 = 83 C; 0x2E40 = 11840 / 32 - 273 = 97 C
+    CHECK(J1939::decode(0x18FEEE00, et1, 8, d) == 65262 && near(d.coolantC, 83) && near(d.oilTempC, 97));
+    uint8_t nada[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+    Obd::Data e;
+    CHECK(J1939::decode(0x18FEEE00, nada, 8, e) == 0 && std::isnan(e.coolantC));     // todo "sin dato": no se toma nada
+    CHECK(J1939::decode(0x18FEEE00, et1, 7, e) == 0);                                 // trama corta
+    uint8_t err[8] = {0xFE, 0xFF, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF};                // 0xFE / 0xFExx = error del sensor
+    CHECK(J1939::decode(0x18FEEE00, err, 8, e) == 0 && std::isnan(e.oilTempC));
+    J1939::clear(d, 65262);
+    CHECK(std::isnan(d.coolantC) && std::isnan(d.oilTempC) && near(d.rpm, 621.0));
+}
+
 int main() {
     testObd();
+    testJ1939();
     testEngineN2k();
     printf("%d comprobaciones, %d fallos\n", checks, fails);
     return fails ? 1 : 0;

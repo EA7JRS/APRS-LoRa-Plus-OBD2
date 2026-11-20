@@ -45,6 +45,12 @@ struct Data {
     float fuelRateLh = NAN;
     float mapKpa = NAN;
     uint32_t runtimeS = 0xFFFFFFFF;
+    // Solo con J1939 (motor de barco): el OBD-II del modo 01 no los da
+    float oilPressKpa = NAN;         // presión de aceite
+    float coolantPressKpa = NAN;     // presión del refrigerante
+    float fuelPressKpa = NAN;        // presión de alimentación de combustible
+    float boostKpa = NAN;            // presión de sobrealimentación (manométrica)
+    uint32_t engineHoursS = 0xFFFFFFFF;   // horas totales del motor, en segundos
     bool has(float v) const { return !std::isnan(v); }
 };
 

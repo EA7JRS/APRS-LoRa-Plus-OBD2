@@ -5,7 +5,8 @@
 // Emisión NMEA 2000 de los datos de motor (ISO 11783-3 / NMEA 2000, 250 kbit/s): identificador de 29 bits, NAME, reclamo de
 // dirección ISO (60928 / 59904) y codificadores de los PGN de motor que muestran los plotters (APRS LoRa+ y Garmin):
 // 127488 (rápido), 127489 (dinámico, fast packet), 127505 (nivel de combustible) y 127508 (batería). Formatos contrastados
-// con canboat / la librería NMEA2000. Sin Arduino. No es un nodo certificado.
+// con la base de datos de CANboat (https://canboat.github.io/canboat/canboat.html, canboat.json v9.2.0, Apache-2.0;
+// tools/canboat_run.sh lo repite en la CI) y con la librería NMEA2000. Sin Arduino. No es un nodo certificado.
 #pragma once
 #include <stdint.h>
 #include <string.h>

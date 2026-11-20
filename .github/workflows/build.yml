@@ -8,6 +8,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Pruebas del núcleo en el PC
         run: make -C test_host run
+      - name: Formatos contra CANboat (release fijada)
+        run: tools/canboat_run.sh
   firmware:
     runs-on: ubuntu-latest
     steps:

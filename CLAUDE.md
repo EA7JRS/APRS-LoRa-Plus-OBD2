@@ -2,7 +2,7 @@
 
 Propietario: Manuel (EA7JRS). Idioma de trabajo: español, respuestas breves y directas.
 Archivos nuevos con la cabecera `Copyright (C) 2026 Manuel - EA7JRS` y licencia GPL-3.0-or-later.
-Repositorio: `EA7JRS/APRS-LoRa-Plus-OBD2` (por crear). Parte del ecosistema APRS LoRa+ (tracker, rotor, app, display, plotter, pasarela NMEA2000, sat-aprs).
+Repositorio: `EA7JRS/APRS-LoRa-Plus-OBD2` (público, creado por Manuel). Parte del ecosistema APRS LoRa+ (tracker, rotor, app, display, plotter, pasarela NMEA2000, sat-aprs).
 
 ## Qué es
 Uso del «kit CAN» de Manuel (XIAO ESP32-S3 + XIAO CAN Bus Expansion Board): pasarela **OBD-II → NMEA 2000**. Lee el OBD-II del coche y emite los datos de motor al bus NMEA 2000 para que se vean como indicadores de motor en el **plotter APRS LoRa+** y en un **plotter Garmin**. Opcional: telemetría APRS al tracker/app.
@@ -18,16 +18,25 @@ Uso del «kit CAN» de Manuel (XIAO ESP32-S3 + XIAO CAN Bus Expansion Board): pa
   - `n2k_engine.h`: identificador de 29 bits, NAME, reclamo de dirección ISO (60928/59904) y codificadores de los PGN de motor (127488 rápido, 127489 dinámico fast packet, 127505 nivel de combustible, 127508 batería) + partido de fast packet. Formatos contrastados con la librería NMEA2000 de ttlappalainen.
 - `test_host/`: pruebas en el PC (`make run`; 20 comprobaciones). PID decodificados contra ejemplos J1979; PGN contra los valores de la librería NMEA2000.
 - `src/`: firmware (por hacer): lectura OBD-II por el MCP2515, emisión NMEA 2000 por el TWAI, WebUI, config, telemetría APRS.
-- Entorno: `xiao_esp32s3_obd2` (espressif32 8.0.0, `seeed_xiao_esp32s3`, `default_8MB.csv`). Librerías: CAN_BUS_Shield (MCP2515), NimBLE 2.5.2, ArduinoJson 7.4.3.
+- Entorno: `xiao_esp32s3_obd2` (espressif32 8.0.0, `seeed_xiao_esp32s3`, `default_8MB.csv`). Librerías: CAN_BUS_Shield (MCP2515), ArduinoJson 7.4.3. NMEA 2000 por el TWAI nativo (sin librería; `n2k_engine.h` propio). WebUI, OTA, LittleFS y mDNS del core de Arduino.
 
 ## PID → PGN (mapa)
 - RPM (0x0C) → 127488 EngineSpeed; MAP (0x0B) → 127488 presión de turbo.
 - Refrigerante (0x05) → 127489 CoolantTemp; aceite (0x5C) → OilTemp; consumo (0x5E) → FuelRate; tensión del módulo (0x42) → AltVoltage y 127508; horas/marcha (0x1F) → EngineHours; carga (0x04) → Load.
 - Nivel de combustible (0x2F) → 127505 (tipo 0 = combustible).
 
-## Estado (2026-11-14)
-- Núcleo probado en el PC (20 comprobaciones). Firmware, WebUI y release: **en preparación**. Sin probar con un coche, un transceptor, ni un plotter.
-- Falta: drivers de las dos CAN (MCP2515 + TWAI), bucle de consulta OBD-II, emisión de los PGN, WebUI, config, CI, release en el instalador web (grupo propio o «kit CAN»), y la telemetría APRS opcional.
+## Estado (2026-11-15)
+- Núcleo probado en el PC (20 comprobaciones).
+- **Firmware (2026-11-15):** `src/board.h` (pines XIAO: MCP2515 CS D7=GPIO44 por SPI D8/D9/D10; TWAI TX D2=GPIO3 / RX D3=GPIO4; `OBD2_VERSION` 5.4.6 desde el 2026-11-15, antes 0.1.0), `src/config.*` (LittleFS `/obd_conf.json`: WiFi, OBD cs/mhz/pollMs/timeoutMs, NMEA 2000 tx/rx/addr/instancia, `mapAsBoost`, `fuelCapacityL`, `aprsOut` pendiente), `src/obd_link.*` (MCP2515 con CAN_BUS_Shield a 500 kbit/s; consulta los PID de `pollList` por turnos; `snapshot()` pone a NAN lo que no llega en `timeoutMs`; solo lee), `src/n2k.*` (TWAI nativo a 250 kbit/s con `N2kEng::AddressClaim`; emite 127488 cada 100 ms, 127489 fast packet cada 500 ms, 127505 cada 2 s y 127508 cada 1 s cuando hay dato; guarda la dirección negociada en NVS `obd2n2k/addr`), `src/net.*` + `src/web_page.h` (WiFi AP/cliente, WebUI con la cabecera del ecosistema y donativo PayPal.me, `/api/status`, `/api/config`, `/update`), `src/main.cpp` (`APRS-INFO?` → `device=obd2`). Quitado NimBLE de `platformio.ini` (no se usa). **Compila en la CI. Sin probar con un coche, un transceptor ni un plotter.**
+- MAP → 127488 como sobrealimentación manométrica (MAP − 101,325 kPa, mínimo 0) si `mapAsBoost`; refrigerante/aceite a kelvin; tensión del módulo a `AltVoltage` (127489) y 127508; nivel 0x2F → 127505 tipo 0.
+- Falta: telemetría APRS opcional al tracker/app; release en el instalador web (grupo «kit CAN» / Náutica); comprobar en la placa los pines, el cristal del MCP2515 y los PGN con un vehículo y un plotter reales.
+
+## J1939 y CANboat (2026-11-15; Manuel: «los 3 puntos»)
+- `lib/ObdCore/src/j1939.h`: decodificador J1939 (61444, 61443, 65262, 65263, 65266, 65270, 65271, 65276, 65253) a `Obd::Data` (campos nuevos `oilPressKpa`, `coolantPressKpa`, `fuelPressKpa`, `boostKpa`, `engineHoursS`). `obd.proto` `obd2` | `j1939`, `obd.j1939Kbps` 250 | 500; en J1939 `obd_link` solo escucha (tramas de 29 bits) y la caducidad es 4 × `timeoutMs`. Sin probar con un motor.
+- Referencia de formatos: CANboat **v9.2.0** fijada (`tools/canboat_run.sh`, `canboat_check.py`, `j1939_check.py`, `test_host/dump_frames.cpp`): 28 + 31 comprobaciones en la CI; `canboat_check.py` es el mismo en plotter y sat-aprs. 28 comprobaciones en `test_host`.
+
+## Instalador web (2026-11-15; Manuel: «en el grupo náutica falta… y obdii»)
+- `.github/workflows/release.yml` (etiqueta `vX.Y.Z` o rama `release/vX.Y.Z`; comprueba que coincide con `OBD2_VERSION`) y `tools/make_web_site.py` → `web-site-obd2.zip` (`latest.json` con `device: obd2`, placa `xiao_esp32s3_obd2` = `OBD2_BOARD`, sin borrar la NVS) más la imagen completa y el firmware. En el tracker: `obd2` en el bucle de `pages.yml`, carpeta `obd2/` en el grupo Náutica de `web/index.html` y `ALIAS` `obd2` → `nautica`.
 
 ## Versión
 - **5.4.7** (2026-11-20; Manuel: «subimos todo a la siguiente version»): `OBD2_VERSION` en `platformio.ini` (lo contesta `APRS-INFO?`), README. Mismo número que el resto del ecosistema.
